@@ -1,8 +1,10 @@
 import React from "react";
 import { useLaunchInfoQuery } from "../../generated/graphql";
 import LaunchInfoList from "./LaunchInfoList";
+import { useParams } from "react-router-dom";
 
-const Launch = ({ id }: { id: string }) => {
+const Launch = () => {
+  const { id } = useParams();
   const { data, error, loading, refetch } = useLaunchInfoQuery({
     variables: { id },
   });
@@ -11,11 +13,15 @@ const Launch = ({ id }: { id: string }) => {
     refetch();
   }, [id]);
 
-  if (loading) return <h2>Loading</h2>;
+  if (loading) return <h2 className="text-center mt-4">Loading</h2>;
 
-  if (error || !data) return <h1>Error</h1>;
+  if (error || !data) return <h1 className="text-center mt-4">Error</h1>;
 
-  return <LaunchInfoList data={data} />;
+  return (
+    <div className="container text-center mt-4">
+      <LaunchInfoList data={data} id={id} />
+    </div>
+  );
 };
 
 export default Launch;
